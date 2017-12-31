@@ -45,6 +45,13 @@ echo "Pour en savoir davantage, faite simplement : \" quitter.sh -h \"."
 
 }
 
+function supprimerHeure {
+	
+	heure=$(date +%H%M)
+	sed '/$heure/d' $CHEMINDACCES$FICHIER
+
+}
+
 
 case "$1" in
 -l)
