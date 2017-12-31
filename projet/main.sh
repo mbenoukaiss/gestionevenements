@@ -20,14 +20,15 @@ echo "          quitter -q pour quitter le script"
 function afficherRendezVousAVenir {
 if [ -n "$tag" ]{
 then
-        date '+%H%M'
         echo −n "Nous sommes le : "
         date '+%j %m %Y'
         echo "et il est : "
         date '+%H:%M'
         echo "Voici vos prochains rendez-vous"
-        cut -d: -f1-3 $CHEMINDACCES$FICHIER
+        grep '^$heure' $CHEMINDACCES$FICHIER | cut -d: -f1-3
 } else {
+then 
+	
 }
 }
 
