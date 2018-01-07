@@ -67,6 +67,8 @@ case "$1" in
 -q)
 	if verifieProcessus = 0
 	then  stopProcessus fi ;;
+"")
+	./rendezvous.sh ;;
 *)
 	error
 	exit 1
