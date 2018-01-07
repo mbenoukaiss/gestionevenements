@@ -17,25 +17,27 @@ echo "          quitter -q pour quitter le script"
 
 }
 
-function afficherRendezVousAVenir {
-if [ -n "$tag" ]{
-then
-        echo −n "Nous sommes le : "
-        date '+%j %m %Y'
-        echo "et il est : "
-        date '+%H:%M'
-        echo "Voici vos prochains rendez-vous"
-        grep '^$heure' $CHEMINDACCES$FICHIER | cut -d: -f1-3
-} else {
-then 
-	
-}
-}
+#function afficherRendezVousAVenir {
+#if [ -n "$tag" ]{
+#then
+#        echo −n "Nous sommes le : "
+#        date '+%j %m %Y'
+#        echo "et il est : "
+#        date '+%H:%M'
+#        echo "Voici vos prochains rendez-vous : "
+#        grep '^$heure' $CHEMINDACCES$FICHIER | cut -d: -f1-3
+#} else {
+#then 
+#}
+#}
 
 function afficherAllRendezVous {
-
+if [ -n "$tag" ]{
+then 
 less $CHEMINDACCES$FICHIER | cut -d: -f1-3
-
+} else {
+then 
+grep $tag $CHEMINDACCES$FICHIER | cut -d: -f1-3 | less
 }
 
 function error {
@@ -46,21 +48,17 @@ echo "Pour en savoir davantage, faite simplement : \" quitter.sh -h \"."
 }
 
 function supprimerHeure {
-	
-	heure=$(date +%H%M)
-	sed '/$heure/d' $CHEMINDACCES$FICHIER
-
-}
-
+	sed '/$1/d' $CHEMINDACCES$FICHIER
+	}
 
 case "$1" in
 -l)
 	tag="$2"
 	afficherRendezVousAVenir ;;
 -a)
+	tag="$2"
 	afficherAllRendezVous ;;
 -r)
-	tag="$2"
 	supprimerHeure ;;
 -h)
 	usage ;;
