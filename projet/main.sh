@@ -36,7 +36,6 @@ if [ -n "$tag" ]{
 then 
 less $CHEMINDACCES$FICHIER | cut -d: -f1-3
 } else {
-then 
 grep $tag $CHEMINDACCES$FICHIER | cut -d: -f1-3 | less
 }
 
