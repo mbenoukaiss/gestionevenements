@@ -32,12 +32,12 @@ echo "          quitter -q pour quitter le script"
 #}
 
 function afficherAllRendezVous {
-if [ -n "$tag" ]{
+if [ -n "$tag" ]
 then 
 less $CHEMINDACCES$FICHIER | cut -d: -f1-3
-} else {
+else
 grep $tag $CHEMINDACCES$FICHIER | cut -d: -f1-3 | less
-}
+fi
 
 function error {
 
