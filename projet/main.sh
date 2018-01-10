@@ -1,6 +1,9 @@
 #!/bin/bash
 CHEMINDACCES="~/.config/quitter/"
 FICHIER="horaires.db"
+CHEMINTMP="/tmp/quitter"
+FICHIERLIGNETMP="ligneASupprimer.db"
+FICHIERTMP="horaires.db"
 #HHMM:tag:message
 #tag:chaine (ex tag1+tag2+tag3)
 #ON PEUT L'AMÉLIORER AVEC JOUR ET MOIS EN PLUS
@@ -57,6 +60,14 @@ echo "Pour en savoir davantage, faite simplement : \" quitter.sh -h \"."
 function supprimerHeure {
 	sed '/$1/d' $CHEMINDACCES$FICHIER
 	}
+	
+function supprimerTag {
+	cut -d: -f2 $CHEMINDACCES$FICHIER | grep -n $tag | cut -d: -f1 > $CHEMINTMP$FICHIERLIGNETMP
+}
+
+function supprimerRendezVous{
+	
+}
 
 case "$1" in
 -l)
@@ -66,7 +77,7 @@ case "$1" in
 	tag="$2"
 	afficherAllRendezVous ;;
 -r)
-	supprimerHeure ;;
+	supprimerRendezVous ;;
 -h)
 	usage ;;
 -q)
