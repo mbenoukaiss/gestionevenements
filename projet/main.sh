@@ -58,7 +58,7 @@ echo "Pour en savoir davantage, faite simplement : \" quitter.sh -h \"."
 }
 
 function supprimerHeure {
-	sed '/$1/d' $CHEMINDACCES$FICHIER
+	sed -i '/$1/d' $CHEMINDACCES$FICHIER
 	}
 	
 function supprimerTag {
