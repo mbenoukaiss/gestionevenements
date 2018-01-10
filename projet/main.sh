@@ -34,10 +34,18 @@ echo "          quitter -q pour quitter le script"
 function afficherAllRendezVous {
 if [ -n "$tag" ]
 then 
-less $CHEMINDACCES$FICHIER | cut -d: -f1-3
+while read ligne
+do
+heure=$(cut -d: -f1 $CHEMINDACCES$FICHIER)
+message=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
+tags=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
+printf "$heure $message $tags"
+done < $CHEMINDACCES$FICHIER
 else
-grep $tag $CHEMINDACCES$FICHIER | cut -d: -f1-3 | less
+cut -d: -f2 $CHEMINDACCES$FICHIER | grep -n $tag | cut -d: -f1 > $CHEMINTMP$FICHIERLIGNETMP
+"">$CHEMINTMP$FICHIERTMP
 fi
+}
 
 function error {
 
