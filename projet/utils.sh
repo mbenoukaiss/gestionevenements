@@ -9,13 +9,26 @@ function chaineVersHeure {
 
 	let fheures=$chaine/100
 	let fminutes=$chaine-$hours*100
+}
 
-    if( test $fheures -ge 24)
+# Vérifie si une chaine représentant une heure est valide
+#
+# param tag : La chaine à vérifier
+# return : 1 : Chaine négative
+#          2 : Heures invalide
+#          3 : Minutes invalide
+function verifieChaineHeure {
+    chaineVersHeure $1
+    
+    if(test $1 -lt 0)
     then
         return 1
-    elif( test $fminutes -ge 60)
+    elif(test $fheures -ge 24)
     then
         return 2
+    elif(test $fminutes -ge 60)
+    then
+        return 3
     else
         return 0
     fi
