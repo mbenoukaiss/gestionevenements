@@ -18,34 +18,34 @@ function usage {
 }
 
 function afficherRendezVousAVenir {
-	if test -z "$tag"
-	then
-        	echo -n "Nous sommes le : "
-        	date "+%A %d %B %Y"
-       		echo -n "et il est : "
-        	date "+%H:%M"
-		date=$(date "+%H%M")
-        	echo "Voici vos prochains rendez-vous : "
-        	sort $FICHIER
-		cat -n $FICHIER | grep "$date"
-	else
-		echo "ONESTAVECUNTAG"
-	fi
+    if test -z "$tag"
+    then
+        echo -n "Nous sommes le : "
+        date "+%A %d %B %Y"
+        echo -n "et il est : "
+        date "+%H:%M"
+        date=$(date "+%H%M")
+        echo "Voici vos prochains rendez-vous : "
+        sort $FICHIER
+        cat -n $FICHIER | grep "$date"
+    else
+        echo "ONESTAVECUNTAG"
+    fi
 }
 
 function afficherAllRendezVous {
-	if test -z "$tag"
-	then 	
-		while read ligne
-		do
-		heure=$(cut -d: -f1 $CHEMINDACCES$FICHIER)
-		message=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
-		tags=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
-		echo "$heure $message $tags"
-		done < $CHEMINDACCES$FICHIER
-	else
-		sed '/$tag/' $FICHIER
-	fi
+    if test -z "$tag"
+    then     
+        while read ligne
+        do
+        heure=$(cut -d: -f1 $CHEMINDACCES$FICHIER)
+        message=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
+        tags=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
+        echo "$heure $message $tags"
+        done < $CHEMINDACCES$FICHIER
+    else
+        sed '/$tag/' $FICHIER
+    fi
 }
 
 case "$1" in
