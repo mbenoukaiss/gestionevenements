@@ -78,6 +78,12 @@ case "$1" in
         fi
         ;;
     *)
-        ajouterRendezvous "$*" $#
+
+        args=$(echo $* | cut -d' ' -f2-$# | tr " " "\n")
+        heurechaine=$(cut -d' ' -f1 <<< "$1")
+        message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
+        tags=$(grep -F + <<< "$args" | tr -d "\n")
+
+        ajouterRendezvous "$heurechaine" "$message" "$tags"
         ;;
 esac
