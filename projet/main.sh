@@ -60,11 +60,6 @@ function afficherAllRendezVous {
     fi
 }
 
-function error {
-    echo "Vous devez choisir une option parmi : \"-l\", \"-a\", \"-r\" , \"-h\" ou \"-q\"."
-    echo "Pour en savoir davantage, faite simplement : \" quitter.sh -h \"."
-}
-
 case "$1" in
     -l)
         tag="$2"
@@ -95,6 +90,6 @@ case "$1" in
         fi
         ;;
     *)
-        error
-        exit 1
+        ajouterRendezvous "$*" 
+        ;;
 esac
