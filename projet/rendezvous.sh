@@ -51,7 +51,16 @@ function supprimerRendezvousHeure {
         return $?
     fi
 
-    sed -i "/$chaine/d" $FICHIERRENDEZVOUS
+    sed -i "/$chaine:/d" $FICHIERRENDEZVOUS
+}
+
+function ajouterRendezvous {
+    heurechaine=$(cut -d' ' -f1 <<< "$1")
+    args=$(echo $1 | cut -d' ' -f2-$2 | tr " " "\n")
+    message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
+    tags=$(grep -F + <<< "$args" | tr -d "\n")
+
+    echo "$heurechaine:$tags:$message" > $FICHIERRENDEZVOUS
 }
 
 setupRendezvous

@@ -90,6 +90,6 @@ case "$1" in
         fi
         ;;
     *)
-        ajouterRendezvous "$*" 
+        ajouterRendezvous "$*" $#
         ;;
 esac
