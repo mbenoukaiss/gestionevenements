@@ -8,13 +8,13 @@ Quitter est un script bash permettant de gérer les rendez-vous d'une personne d
 Afin d'être capable de lancer une alerte au bon moment, un script est lancé en tâche de fond et vérifie toutes les 30 secondes l'heure système et la compare aux divers rendez-vous dans le fichier de données.
 
 ## Syntaxe d'appel du script
-usage :   quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
-          quitter -l [+tag ...] pour afficher la liste des rendez-vous à venir"
-          quitter -a pour afficher la liste de tous les rendez-vous"
-          quitter -r [HHMM] pour supprimer les rendez-vous de l'heure correspondante"
-          quitter -r [+tag ...] pour supprimer les rendez-vous du tag correspondant"
-          quitter -h pour afficher le manuel de la commande"
-          quitter -q pour quitter le script"
+- quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
+- quitter -l [+tag ...] pour afficher la liste des rendez-vous à venir"
+- quitter -a pour afficher la liste de tous les rendez-vous"
+- quitter -r [HHMM] pour supprimer les rendez-vous de l'heure correspondante"
+- quitter -r [+tag ...] pour supprimer les rendez-vous du tag correspondant"
+- quitter -h pour afficher le manuel de la commande"
+- quitter -q pour quitter le script"
 
 ## Traces d'execution
 
@@ -26,3 +26,4 @@ usage :   quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'he
 
 
 ## Améliorations éventuelles
+Il aurait été plus pratique d'avoir un gestionnaire d'évènements qui permette aussi de renseigner le jour, le mois et l'année afin de pouvoir noter des rendez-vous plusieurs jours/mois à l'avance. À chaque execution du script, celui-ci supprimerait tous les évènements passés (si l'utilisateur avait arrêté le script ou si son ordinateur n'était pas allumé lorsqu'un évènement aurait du se déclencher).
