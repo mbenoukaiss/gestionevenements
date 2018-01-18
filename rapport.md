@@ -17,13 +17,14 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 - quitter -q pour quitter le script"
 
 ## Traces d'execution
-
+ - quitter 1245 Manger avec mes parents +manger +parents :
+	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce case lancera la fonction ajouterRendezVous
 
 ## Difficultés rencontrées lors du projet
-- Utiliser git @Clément@Clément@Clément@Clément@Clément@Clément@Clément@Clément@Clément@Clément
+- Utiliser git
 
 ## Travail réalisé
-
+ - Nous avons réalisé sept fonctions pour executer répondant aux différentes options pouvant être executées par l'utilisateur lorsqu'il appel le script (Voir syntaxe d'appel du script). 
 
 ## Améliorations éventuelles
 Il aurait été plus pratique d'avoir un gestionnaire d'évènements qui permette aussi de renseigner le jour, le mois et l'année afin de pouvoir noter des rendez-vous plusieurs jours/mois à l'avance. À chaque execution du script, celui-ci supprimerait tous les évènements passés (si l'utilisateur avait arrêté le script ou si son ordinateur n'était pas allumé lorsqu'un évènement aurait du se déclencher).
