@@ -18,8 +18,12 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 
 ## Traces d'execution
  - quitter 1245 Manger avec mes parents +manger +parents :
-	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce case lancera la fonction ajouterRendezVous
-
+	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce cas découpera en trois grosses parties, l'horaire : 1245, le message : Manger avec mes parents, et la chaîne de caractère des tags : +manger +parents.
+	- Ces trois parties seront lancer en argument sur notre fonction ajouterRendezvous qui ajoutera dans notre fichier horaire.db le rendez-vous sous la forme : 1245:+manger +parents:Manger avec mes parents
+ - quitter -a :
+	- Notre programme rentrera dans notre boucle case pour lancer la fonction afficherAllRendezVous qui remettra chacune des parties de chaque ligne de rendez-vous afin d'afficher la liste de tous les rendez-vous sous la forme : HHMM message... [+tag +tag ...]
+ - quitter -l
+	- Ici, notre programme rentre la fonction afficherRendezVousAVenir en prenant en premier argument, la chaîne de tag que l'utilisateur pourrait rentrer 
 ## Difficultés rencontrées lors du projet
 - Utiliser git
 
