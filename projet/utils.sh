@@ -8,7 +8,7 @@ function chaineVersHeure {
 	chaine=$1
 
 	let fheures=$chaine/100
-	let fminutes=$chaine-$hours*100
+	let fminutes=$chaine-$fheures*100
 }
 
 # Vérifie si une chaine représentant une heure est valide
