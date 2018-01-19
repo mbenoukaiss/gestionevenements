@@ -34,8 +34,6 @@ function afficherRendezVousAVenir {
 }
 
 function afficherAllRendezVous {
-    if test -z "$tag"
-    then
         echo "Voici la liste des rendez-vous :"
         while read ligne
         do
@@ -43,21 +41,21 @@ function afficherAllRendezVous {
         message=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
         tags=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
 
-        echo "$fheures:$fminutes $message $tags"
+        if test -z $1 || test -n $(echo $tags | grep $1)
+        then
+            echo "$fheures:$fminutes $message $tags"
+        fi
         done < $CHEMINDACCES$FICHIER
-    else
-        sed '/$tag/' $FICHIER
-    fi
 }
 
 case "$1" in
     -l)
         tag="$2"
-        afficherRendezVousAVenir $2
+        afficherRendezVousAVenir $tag
         ;;
     -a)
         tag="$2"
-        afficherAllRendezVous
+        afficherAllRendezVous $tag
         ;;
     -r)
         args=$(cut -d':' -f2)
