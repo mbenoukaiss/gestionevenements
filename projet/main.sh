@@ -22,12 +22,12 @@ function afficherRendezVousAVenir {
     then
         echo -n "Nous sommes le : "
         date "+%A %d %B %Y"
-        echo -n "et il est : "
+        echo "Il est : "
         date "+%H:%M"
-        date=$(date "+%H%M")
+
         echo "Voici vos prochains rendez-vous : "
-        sort $FICHIER
-        cat -n $FICHIER | grep "$date"
+        sort $CHEMINDACCES$FICHIER
+        cat -n $CHEMINDACCES$FICHIER | grep "$date"
     else
         echo "ONESTAVECUNTAG"
     fi
@@ -35,13 +35,15 @@ function afficherRendezVousAVenir {
 
 function afficherAllRendezVous {
     if test -z "$tag"
-    then     
+    then
+        echo "Voici la liste des rendez-vous :"
         while read ligne
         do
-        heure=$(cut -d: -f1 $CHEMINDACCES$FICHIER)
-        message=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
-        tags=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
-        echo "$heure $message $tags"
+        chaineVersHeure $(cut -d: -f1 $CHEMINDACCES$FICHIER) #return fheures, fminutes
+        message=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
+        tags=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
+
+        echo "$fheures:$fminutes $message $tags"
         done < $CHEMINDACCES$FICHIER
     else
         sed '/$tag/' $FICHIER
@@ -78,12 +80,16 @@ case "$1" in
         fi
         ;;
     *)
+        if test $# -gt 1
+        then
+            args=$(echo $* | cut -d' ' -f2-$# | tr " " "\n")
+            heurechaine=$(cut -d' ' -f1 <<< "$1")
+            message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
+            tags=$(grep -F + <<< "$args" | tr -d "\n")
 
-        args=$(echo $* | cut -d' ' -f2-$# | tr " " "\n")
-        heurechaine=$(cut -d' ' -f1 <<< "$1")
-        message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
-        tags=$(grep -F + <<< "$args" | tr -d "\n")
-
-        ajouterRendezvous "$heurechaine" "$message" "$tags"
+            ajouterRendezvous "$heurechaine" "$message" "$tags"
+        else
+            xmessage "Pas assez d'arguments pour ajouter un rendez-vous"
+        fi
         ;;
 esac
