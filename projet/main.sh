@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHEMINDACCES="~/.config/quitter/"
+CHEMINDACCES="/tmp/.config/quitter/"
 FICHIER="horaires.db"
 
 #HHMM:tag:message
@@ -72,7 +72,9 @@ case "$1" in
         usage
         ;;
     -q)
-        if verifieProcessus = 0
+        verifieProcessus
+
+        if $? -eq 0
         then
             stopProcessus
         fi
@@ -87,7 +89,14 @@ case "$1" in
 
             ajouterRendezvous "$heurechaine" "$message" "$tags"
         else
-            xmessage "Pas assez d'arguments pour ajouter un rendez-vous"
+            verifieProcessus
+
+            if $? -eq 0
+            then
+                stopProcessus
+            fi
+
+            ./tachefond.sh &
         fi
         ;;
 esac
