@@ -57,7 +57,7 @@ function createProcessus {
 # Arrête le processus contenu dans le fichier $FICHIERPID
 #
 # return 1 : Le processus contenu dans le fichier n'est
-# 			 pas valide
+#            pas valide
 function stopProcessus {
 	setupConfig
 	verifieProcessus
@@ -71,7 +71,8 @@ function stopProcessus {
 			kill -9 $pid
 		fi
 
-		echo > FICHIERPID
+		rm $FICHIERPID
+                touch $FICHIERPID
 	else
 		return 1
 	fi
