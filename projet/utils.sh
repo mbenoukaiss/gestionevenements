@@ -56,6 +56,13 @@ function heureVersChaine {
     fi
 
     fchaine="$heures$minutes"
+}
 
-    echo $fchaine
+# Décompose une ligne de données du fichier horaires.db
+#
+# param ligne : La ligne à décomposer
+function decomposeLigne {
+    fheurechaine=$(cut -d':' -f1 <<< "$1")
+    fmessage=$(cut -d':' -f2 <<< "$1")
+    ftags=$(cut -d':' -f3 <<< "$1")
 }
