@@ -97,6 +97,7 @@ case "$1" in
             fi
 
             ./tachefond.sh &
+            createProcessus $!
         fi
         ;;
 esac
