@@ -50,7 +50,7 @@ function ajouterRendezvous {
         return $?
     fi
 
-    echo "$heurechaine:$tags:$message" > $FICHIERRENDEZVOUS
+    echo -e "$heurechaine$TAB$tags$TAB$message" >> $FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction des tags fournis
@@ -59,7 +59,7 @@ function ajouterRendezvous {
 # param tag : Le tag à supprimer
 function supprimerRendezvousTags {
     tag=$(echo $1 | tr -dc "[a-zA-Z0-9]")
-    sed -i -E "/[0-9]{4}:[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}:.{0,}/d" $FICHIERRENDEZVOUS
+    sed -i -E "/[0-9]{4}$TAB[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}$TAB.{0,}/d" $FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction de l'heure fournie
@@ -72,16 +72,23 @@ function supprimerRendezvousHeure {
 
     if(test $? -ne 0)
     then
-        xmessage "L'heure renseignée est invalide"
+        xmessage "L'heure renseignee est invalide ($chaine)"
         return $?
     fi
 
-    sed -i "/$chaine:/d" $FICHIERRENDEZVOUS
+    sed -i "/^$chaine$TAB/d" $FICHIERRENDEZVOUS
 }
 
 # Zone de tests
+if test $# -gt 1
+then
+    args=$(echo $* | cut -d' ' -f2-$# | tr " " "\n")
+    heurechaine=$(cut -d' ' -f1 <<< "$1")
+    message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
+    tags=$(grep -F + <<< "$args" | tr -d "\n")
+
+    ajouterRendezvous "$heurechaine" "$message" "$tags"
+fi
+
 setupRendezvous
-supprimerRendezvousTags "+tag"
-supprimerRendezvousHeure "1251"
-supprimerRendezvousHeure "5523"
-ajouterRendezvous "2243 Il faut aller au rendez-vous +tag +rendezvous"
+supprimerRendezvousHeure "1512"
