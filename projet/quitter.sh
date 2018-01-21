@@ -1,5 +1,20 @@
 #!/bin/bash
 
+##########################################
+###
+###                         QUITTER.SH
+###
+###         Auteurs :
+###      BENOU-KAÏSS Marwane, QUERRE Clément
+###
+###    Cette oeuvre, création, site ou texte est sous licence 
+###    Creative Commons Attribution -  Partage dans les Mêmes 
+###    Conditions 4.0 International. Pour accéder à une copie 
+###  de cette licence, merci de vous rendre à l'adresse suivante 
+###       http://creativecommons.org/licenses/by-sa/4.0/     
+###
+###################################################################
+
 # Repertoire pour les sauvegardes
 REPERTOIREQUITTER=~/.config/quitter/
 
@@ -10,8 +25,8 @@ FICHIERRENDEZVOUS=horaires.db
 FICHIERPID=boucle.pid
 
 # Caractère tabulation
-# Le support de ce caractère dans la commande sed et la commande echo
-# peuvent varier en fonction des versions, il est
+# Le support de ce caractère dans la commande sed et la commande echo peuvent
+# varier en fonction des versions, il est donc utile de le définir ici
 TAB=$(printf "\t")
 
 ###################################
@@ -22,10 +37,6 @@ TAB=$(printf "\t")
 
 # Convertit une chaine de caractères sous la forme HHMM en deux
 # variables : fheures contenant HH et fminutes contenant MM
-#
-# param tag : Le tag à supprimer
-# return : 1 : Heures invalide
-#          2 : Minutes invalide
 function chaineVersHeure {
 	chaine=$1
 
@@ -91,7 +102,7 @@ function decomposeLigne {
 
 ###########################################
 ###					###
-###    FONCTIONS LIEES AUX PROCESSUS	###
+###    FONCTIONS LIÉES AUX PROCESSUS	###
 ###					###
 ###########################################
 
@@ -119,22 +130,33 @@ function tacheFond {
 # Vérifie que les dossiers et les fichiers nécessaires
 # au fonctionnement du script existent, et les créé si
 # ils n'existent pas.
-function setupConfig {
-	if [ ! -e $REPERTOIREQUITTER ]
-	then
-		mkdir $REPERTOIREQUITTER
-	fi
+function setup {
+    if [ ! -e $REPERTOIREQUITTER ]
+    then
+        mkdir $REPERTOIREQUITTER
+    fi
 
-	if [ ! -e $REPERTOIREQUITTER$FICHIERPID ]
-	then
-		touch $REPERTOIREQUITTER$FICHIERPID
-	else
-		if [ ! -f $REPERTOIREQUITTER$FICHIERPID ]
-		then
-			rm -r $REPERTOIREQUITTER$FICHIERPID
-			touch $REPERTOIREQUITTER$FICHIERPID
-		fi
-	fi
+    if [ ! -e $REPERTOIREQUITTER$FICHIERPID ]
+    then
+        touch $REPERTOIREQUITTER$FICHIERPID
+    else
+        if [ ! -f $REPERTOIREQUITTER$FICHIERPID ]
+        then
+            rm -r $REPERTOIREQUITTER$FICHIERPID
+            touch $REPERTOIREQUITTER$FICHIERPID
+        fi
+    fi
+	
+    if [ ! -e $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
+    then
+        touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
+    else
+        if [ ! -f $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
+        then
+            rm -r $REPERTOIREQUITTER$FICHIERRENDEZVOUS
+            touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
+        fi
+    fi
 }
 
 # Vérifie qu'il y a un processus valide dans le fichier
@@ -237,33 +259,6 @@ function afficherAllRendezVous {
     done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
-# Vérifie que les dossiers et les fichiers nécessaires
-# au fonctionnement du script existent, et les créé si
-# ils n'existent pas.
-# De même pour les fichiers temporaires.
-function setupRendezvous {
-    if [ ! -e $RENDEZVOUS ]
-    then
-        mkdir $RENDEZVOUS
-    fi
-
-    if [ ! -e $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
-    then
-        touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
-    else
-        if [ ! -f $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
-        then
-            rm -r $REPERTOIREQUITTER$FICHIERRENDEZVOUS
-            touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
-        fi
-    fi
-
-    if [ ! -e $RENDEZVOUSTMP ]
-    then
-        mkdir $RENDEZVOUSTMP
-    fi
-}
-
 # Ajoute un rendez-vous avec le message et les tags
 # fournis en paramètres.
 # 
@@ -328,8 +323,7 @@ function usage {
     echo "          quitter -q pour quitter le script"
 }
 
-setupConfig
-setupRendezvous
+setup
 
 case "$1" in
     -l)
