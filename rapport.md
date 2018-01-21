@@ -1,7 +1,5 @@
 # Rapport projet : gestionnaire d'évènements
-**Auteurs :**
-- BENOU-KAÏSS Marwane
-- QUERRE Clément
+**Auteurs :** BENOU-KAÏSS Marwane, QUERRE Clément
 
 ## Ce que fait le script
 
@@ -21,8 +19,8 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 ## Sauvegarde des données
 Pour sauvegarder les données de l'utilisateur et du processus, nous utilisons deux fichiers : horaires.db et processus.pid
 
-Le fichier horaires.db, qui contient tous les rendez-vous de l'utilisateur est formatté de la façon suivante :
-heure \t tags \t message
+Le fichier horaires.db, qui contient tous les rendez-vous de l'utilisateur est formatté de la façon suivante : *heure \t tags \t message*
+
 - heure : l'heure de l'évènement sous la forme HHMM
 - tags : les tags sous la forme +tag1+tag2+...
 - message : le message de l'utilisateur
@@ -62,4 +60,9 @@ Le fichier processus.pid contient uniquement l'ID de la tache de fond si jamais 
 
 ## Travail réalisé
 
-- Nous avons réalisé sept fonctions pour executer répondant aux différentes options pouvant être executées par l'utilisateur lorsqu'il appelle le script (Voir syntaxe d'appel du script). 
+- Nous avons réalisé sept fonctions pour executer répondant aux différentes options pouvant être executées par l'utilisateur lorsqu'il appelle le script.
+	- Ajout d'un rendez-vous
+	- Suppression d'un rendez-vous (par tag ou par heure)
+	- Affichage des rendez-vous à venir (possibilité d'utiliser un tag)
+	- Affichage de tous les rendez-vous (possibilité d'utiliser un tag)
+	- Lancement/arrêt d'un processus de fond pour notifier l'utilisateur d'un rendez-vous
