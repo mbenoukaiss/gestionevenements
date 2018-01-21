@@ -82,7 +82,7 @@ case "$1" in
     -q)
         verifieProcessus
 
-        if $? -eq 0
+        if test $? -eq 0
         then
             stopProcessus
         fi

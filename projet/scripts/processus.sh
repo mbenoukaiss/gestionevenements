@@ -30,15 +30,16 @@ function setupConfig {
 # return 1 : Le fichier de processus est vide
 # return 2 : Le processus contenu dans le fichier n'est pas valide
 function verifieProcessus {
-	pid=$(cat FICHIERPID)
+	pid=$(cat $FICHIERPID)
 
 	if test -n $pid
 	then
-		if test -n $(ps axu | cut -d' ' -f2 | grep 29992)
+		if test -n $(ps axu | cut -d' ' -f2 | grep $pid)
 		then
 			return 0
 		else
 			return 2 #LE PROCESSUS N'EST PAS VALIDE
+                fi
 	else
 		return 1 #FICHIER VIDE
 	fi

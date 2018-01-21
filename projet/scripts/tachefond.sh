@@ -10,7 +10,7 @@ function tacheFond {
     do
         while read ligne
         do
-            decomposeLigne $ligne
+            decomposeLigne "$ligne"
 	    currenttime=$(date +"%H%M")
 
             if test $currenttime = $fheurechaine
