@@ -1,5 +1,0 @@
-Il manque :
-  -Fonction afficherProchainRDV
-  
-  l'idée c'est de prendre l'heure et les minutes actuelles et de sortir tous les rdv correspndants à : 
-  HHMM' avec MM'>=MM et HH'** avec HH'>=HH et ** == MM quelconque
