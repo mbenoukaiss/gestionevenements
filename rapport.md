@@ -44,7 +44,7 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 
 ## Difficultés rencontrées lors du projet
 
-- L'utilisation nouvelle de github et des commandes git à l'aide d'un terminal.
+- Lors de la sauvegarde des évènements dans le fichier, il était important de trouver un délimiteur qui permette au script de continuer de fonctionner quel que soit le message de l'utilisateur. Nous avions au départ opté pour le caractère :, mais il se peut que l'utilisateur en utilise dans son message. Finalement, nous avons choisi la tabulation, en effet, il est impossible d'en mettre depuis le terminal.
 
 ## Travail réalisé
 
