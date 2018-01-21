@@ -53,13 +53,13 @@ function chaineVersHeure {
 function verifieChaineHeure {
     chaineVersHeure $1
     
-    if(test $1 -lt 0)
+    if test $1 -lt 0
     then
         return 1
-    elif(test $fheures -ge 24)
+    elif test $fheures -ge 24
     then
         return 2
-    elif(test $fminutes -ge 60)
+    elif test $fminutes -ge 60
     then
         return 3
     else
@@ -78,10 +78,10 @@ function heureVersChaine {
     heures=$1
     minutes=$2
 
-    if( test $heures -ge 24 ||  test $heures -lt 0)
+    if test $heures -ge 24 ||  test $heures -lt 0
     then
         return 1
-    elif( test $minutes -ge 60 || test $minutes -lt 0)
+    elif test $minutes -ge 60 || test $minutes -lt 0
     then
         return 2
     else
@@ -108,9 +108,13 @@ function decomposeLigne {
 
 # Fonction permettant de vérifier, toutes les 30 secondes
 # si il est l'heure d'afficher un message
+# Si un message est envoyé, alors le script attend 60 
+# secondes pour ne pas envoyer deux fois le message
 function tacheFond {
     while true
     do
+        notificationEnvoyee=false
+
         while read ligne
         do
             decomposeLigne "$ligne"
@@ -118,12 +122,18 @@ function tacheFond {
 
             if test $currenttime = $fheurechaine
             then
+                notificationEnvoyee=true
                 chaineVersHeure $fheurechaine
                 echo -e "Il est $fheures:$fminutes et vous avez un rendez-vous : \n$fmessage \nTAGS : $ftags" | xmessage -file - &
             fi
         done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 
-        sleep 30
+        if $notificationEnvoyee
+        then
+            sleep 60
+        else
+            sleep 30
+        fi
     done
 }
 
@@ -173,10 +183,10 @@ function verifieProcessus {
 		then
 			return 0
 		else
-			return 2 #LE PROCESSUS N'EST PAS VALIDE
+			return 2
                 fi
 	else
-		return 1 #FICHIER VIDE
+		return 1
 	fi
 }
 
@@ -233,7 +243,7 @@ function afficherRendezVousAVenir {
         message=$(cut -f3 <<< $ligne)
         tags=$(cut -f2 <<< $ligne)
 
-        if (test $fheures -gt $heures) || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
+        if test $fheures -gt $heures || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
@@ -273,7 +283,7 @@ function ajouterRendezvous {
     verifieChaineHeure $heurechaine #VOIR utils.sh
     if(test $? -ne 0)
     then
-        xmessage "L'heure renseignée est invalide"
+        xmessage "L'heure renseignee est invalide ($chaine)"
         return $?
     fi
 
@@ -314,13 +324,14 @@ function supprimerRendezvousHeure {
 
 # Affiche une aide pour utiliser le script
 function usage {
-    echo "usage :   quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
-    echo "          quitter -l [+tag ...] pour afficher la liste des rendez-vous à venir"
-    echo "          quitter -a pour afficher la liste de tous les rendez-vous"
-    echo "          quitter -r [HHMM] pour supprimer les rendez-vous de l'heure correspondante"
-    echo "          quitter -r [+tag ...] pour supprimer les rendez-vous du tag correspondant"
-    echo "          quitter -h pour afficher le manuel de la commande"
-    echo "          quitter -q pour quitter le script"
+    echo "usage :  quitter                            lance le processus de vérification des évènements"
+    echo "         quitter HHMM message... [+tag ...] ajoute un rendez vous à l'heure indiquée"
+    echo "         quitter -l [+tag ...]              affiche la liste des rendez-vous à venir"
+    echo "         quitter -a                         affiche la liste de tous les rendez-vous"
+    echo "         quitter -r [HHMM]                  supprime les rendez-vous de l'heure correspondante"
+    echo "         quitter -r [+tag ...]              supprime les rendez-vous du tag correspondant"
+    echo "         quitter -h                         affiche le manuel de la commande"
+    echo "         quitter -q                         arrête le processus de vérification des évènements"
 }
 
 setup
@@ -335,14 +346,16 @@ case "$1" in
         afficherAllRendezVous $tag
         ;;
     -r)
-        tags=$(cut -f2 <<< $2)
+        args=$2
 
-        #Si il n'y a pas de + (donc c'est une heure)
-        if(test $tags == $(echo $1 | tr -dc'+'))
+        #Si il y a un + (donc c'est un tag)
+        if grep -q "+" <<< $args
         then
-            supprimerRendezvousHeure $args
-        else
+            echo "hey"
             supprimerRendezvousTags $args
+        else
+            echo "hoh"
+            supprimerRendezvousHeure $args
         fi
         ;;
     -h)
@@ -350,6 +363,10 @@ case "$1" in
         ;;
     -q)
         stopProcessus
+        ;;
+    [-]*)
+        echo "quitter : option invalide '$1'"
+        echo "Saisissez "./quitter.sh -h" pour plus d'informations."
         ;;
     *)
         if test $# -gt 1
