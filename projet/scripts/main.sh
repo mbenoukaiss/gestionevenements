@@ -104,7 +104,7 @@ case "$1" in
                 stopProcessus
             fi
 
-            ./tachefond.sh &
+            tacheFond &
             createProcessus $!
         fi
         ;;
