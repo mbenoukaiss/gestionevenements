@@ -1,3 +1,10 @@
+#!/bin/bash
+
+# Caractère tabulation
+# Le support de ce caractère dans la commande sed et la commande echo
+# peuvent varier en fonction des versions, il est
+TAB=$(printf "\t")
+
 # Convertit une chaine de caractères sous la forme HHMM en deux
 # variables : fheures contenant HH et fminutes contenant MM
 #
