@@ -1,11 +1,7 @@
 #!/bin/bash
 
-CHEMINDACCES="/tmp/.config/quitter/"
-FICHIER="horaires.db"
-
-#HHMM:tag:message
-#tag:chaine (ex tag1+tag2+tag3)
-#ON PEUT L'AMÉLIORER AVEC JOUR ET MOIS EN PLUS
+CHEMINDACCES=~/.config/quitter/
+FICHIER=horaires.db
 
 function usage {
     echo "usage :   quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
@@ -18,34 +14,39 @@ function usage {
 }
 
 function afficherRendezVousAVenir {
-    if test -z "$tag"
-    then
-        echo -n "Nous sommes le : "
-        date "+%A %d %B %Y"
-        echo "Il est : "
-        date "+%H:%M"
+    heures=$(date +%H)
+    minutes=$(date +%M)
 
-        echo "Voici vos prochains rendez-vous : "
-        sort $CHEMINDACCES$FICHIER
-        cat -n $CHEMINDACCES$FICHIER | grep "$date"
-    else
-        echo "ONESTAVECUNTAG"
-    fi
+    echo "Nous sommes le : $(date "+%A %d %B %Y"), il est $heures:$minutes"
+    echo "Voici vos prochains rendez-vous : "
+
+    while read ligne
+    do
+        chaineVersHeure $(cut -f1 <<< $ligne) #return fheures, fminutes
+        message=$(cut -f3 <<< $ligne)
+        tags=$(cut -f2 <<< $ligne)
+
+        if test $fheures -gt $heures || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
+        then
+            echo "$fheures:$fminutes $message (TAGS : $tags)"
+        fi
+    done < $CHEMINDACCES$FICHIER
 }
 
 function afficherAllRendezVous {
-        echo "Voici la liste des rendez-vous :"
-        while read ligne
-        do
-        chaineVersHeure $(cut -d: -f1 $CHEMINDACCES$FICHIER) #return fheures, fminutes
-        message=$(cut -d: -f2 $CHEMINDACCES$FICHIER)
-        tags=$(cut -d: -f3 $CHEMINDACCES$FICHIER)
+    echo "Voici la liste des rendez-vous :"
 
-        if test -z $1 || test -n $(echo $tags | grep $1)
+    while read ligne
+    do
+        chaineVersHeure $(cut -f1 <<< $ligne) #return fheures, fminutes
+        message=$(cut -f3 <<< $ligne)
+        tags=$(cut -f2 <<< $ligne)
+
+        if test -z $1 || grep -q $1 <<< $tags
         then
-            echo "$fheures:$fminutes $message $tags"
+            echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
-        done < $CHEMINDACCES$FICHIER
+    done < $CHEMINDACCES$FICHIER
 }
 
 case "$1" in
@@ -58,10 +59,10 @@ case "$1" in
         afficherAllRendezVous $tag
         ;;
     -r)
-        args=$(cut -d':' -f2)
+        tags=$(cut -f2 <<< $2)
 
         #Si il n'y a pas de + (donc c'est une heure)
-        if(test $args == $(echo $1 | tr -dc'+'))
+        if(test $tags == $(echo $1 | tr -dc'+'))
         then
             supprimerRendezvousHeure $args
         else
