@@ -18,8 +18,22 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 - quitter -h pour afficher le manuel de la commande"
 - quitter -q pour quitter le script"
 
-## Traces d'execution
+## Sauvegarde des données
+Pour sauvegarder les données de l'utilisateur et du processus, nous utilisons deux fichiers : horaires.db et processus.pid
 
+Le fichier horaires.db, qui contient tous les rendez-vous de l'utilisateur est formatté de la façon suivante :
+heure \t tags \t message
+- heure : l'heure de l'évènement sous la forme HHMM
+- tags : les tags sous la forme +tag1+tag2+...
+- message : le message de l'utilisateur
+- La séquence de caractères "\t" représente une tabulation
+- Les espaces sont présent ici afin d'améliorer la lisibilité, ils ne sont pas dans le vrai fichier.
+
+Le fichier processus.pid contient uniquement l'ID de la tache de fond si jamais il y en a une, sinon le fichier est vide.
+
+## Traces d'execution
+- quitter
+	- Lance la fonction chargée d'envoyer des notifications à l'aide de xmessage lorsqu'il est l'heure d'en afficher en tâche de fond. L'ID du processus est sauvegardé dans le fichier processus.pid. Si un processus était déjà en cours d'execution, il est arrêté afin d'en lancer un nouveau.
 - quitter 1245 Manger avec mes parents +manger +parents :
 	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce cas découpera en trois grosses parties, l'horaire : 1245, le message : "Manger avec mes parents", et la chaîne de caractère des tags : "+manger +parents".
 	- Ces trois parties seront lancées en arguments sur notre fonction ajouterRendezVous qui ajoutera, dans notre fichier horaire.db, le rendez-vous sous la forme : 1245	+manger +parents	Manger avec mes parents
