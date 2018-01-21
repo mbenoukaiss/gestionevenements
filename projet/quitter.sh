@@ -1,7 +1,7 @@
 #!/bin/bash
 
-RENDEZVOUS=~/.config/quitter/
-FICHIERRENDEZVOUS=~/.config/quitter/horaires.db
+REPERTOIRERENDEZVOUS=~/.config/quitter/
+FICHIERRENDEZVOUS=horaires.db
 FICHIERPID=~/.config/quitter/boucle.pid
 
 # Caractère tabulation
@@ -99,7 +99,7 @@ function tacheFond {
                 chaineVersHeure $fheurechaine
                 echo -e "Il est $fheures:$fminutes et vous avez un rendez-vous : \n$fmessage \nTAGS : $ftags" | xmessage -file - &
             fi
-        done < $FICHIERRENDEZVOUS
+        done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 
         sleep 30
     done
@@ -109,9 +109,9 @@ function tacheFond {
 # au fonctionnement du script existent, et les créé si
 # ils n'existent pas.
 function setupConfig {
-	if [ ! -e $RENDEZVOUS ]
+	if [ ! -e $REPERTOIRERENDEZVOUS ]
 	then
-		mkdir $RENDEZVOUS
+		mkdir $REPERTOIRERENDEZVOUS
 	fi
 
 	if [ ! -e $FICHIERPID ]
@@ -204,7 +204,7 @@ function afficherRendezVousAVenir {
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
-    done < $RENDEZVOUS$FICHIERRENDEZVOUS
+    done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
 # Affiche tous les rendez-vous
@@ -223,7 +223,7 @@ function afficherAllRendezVous {
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
-    done < $RENDEZVOUS$FICHIERRENDEZVOUS
+    done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
 # Vérifie que les dossiers et les fichiers nécessaires
@@ -236,14 +236,14 @@ function setupRendezvous {
         mkdir $RENDEZVOUS
     fi
 
-    if [ ! -e $FICHIERRENDEZVOUS ]
+    if [ ! -e $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS ]
     then
-        touch $FICHIERRENDEZVOUS
+        touch $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
     else
-        if [ ! -f $FICHIERRENDEZVOUS ]
+        if [ ! -f $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS ]
         then
-            rm -r $FICHIERRENDEZVOUS
-            touch $FICHIERRENDEZVOUS
+            rm -r $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+            touch $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
         fi
     fi
 
@@ -271,7 +271,7 @@ function ajouterRendezvous {
         return $?
     fi
 
-    echo -e "$heurechaine$TAB$tags$TAB$message" >> $FICHIERRENDEZVOUS
+    echo -e "$heurechaine$TAB$tags$TAB$message" >> $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction des tags fournis
@@ -280,7 +280,7 @@ function ajouterRendezvous {
 # param tag : Le tag à supprimer
 function supprimerRendezvousTags {
     tag=$(echo $1 | tr -dc "[a-zA-Z0-9]")
-    sed -i -E "/[0-9]{4}$TAB[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}$TAB.{0,}/d" $FICHIERRENDEZVOUS
+    sed -i -E "/[0-9]{4}$TAB[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}$TAB.{0,}/d" $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction de l'heure fournie
@@ -297,7 +297,7 @@ function supprimerRendezvousHeure {
         return $?
     fi
 
-    sed -i "/^$chaine$TAB/d" $FICHIERRENDEZVOUS
+    sed -i "/^$chaine$TAB/d" $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
 ###
