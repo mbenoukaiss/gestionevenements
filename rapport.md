@@ -29,6 +29,11 @@ Le fichier horaires.db, qui contient tous les rendez-vous de l'utilisateur est f
 
 Le fichier processus.pid contient uniquement l'ID de la tache de fond si jamais il y en a une, sinon le fichier est vide.
 
+
+
+
+
+
 ## Traces d'execution
 - quitter
 	- Lance la fonction chargée d'envoyer des notifications à l'aide de xmessage lorsqu'il est l'heure d'en afficher en tâche de fond. L'ID du processus est sauvegardé dans le fichier processus.pid. Si un processus était déjà en cours d'execution, il est arrêté afin d'en lancer un nouveau.
