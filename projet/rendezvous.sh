@@ -78,17 +78,3 @@ function supprimerRendezvousHeure {
 
     sed -i "/^$chaine$TAB/d" $FICHIERRENDEZVOUS
 }
-
-# Zone de tests
-if test $# -gt 1
-then
-    args=$(echo $* | cut -d' ' -f2-$# | tr " " "\n")
-    heurechaine=$(cut -d' ' -f1 <<< "$1")
-    message=$(grep -F --invert-match + <<< "$args" | tr "\n" " ")
-    tags=$(grep -F + <<< "$args" | tr -d "\n")
-
-    ajouterRendezvous "$heurechaine" "$message" "$tags"
-fi
-
-setupRendezvous
-supprimerRendezvousHeure "1512"
