@@ -14,48 +14,6 @@ function usage {
     echo "          quitter -q pour quitter le script"
 }
 
-# Affiche tous les rendez-vous à venir
-#
-# param tag : Le tag à chercher, optionnel
-function afficherRendezVousAVenir {
-    heures=$(date +%H)
-    minutes=$(date +%M)
-
-    echo "Nous sommes le : $(date "+%A %d %B %Y"), il est $heures:$minutes"
-    echo "Voici vos prochains rendez-vous : "
-
-    while read ligne
-    do
-        chaineVersHeure $(cut -f1 <<< $ligne) #return fheures, fminutes
-        message=$(cut -f3 <<< $ligne)
-        tags=$(cut -f2 <<< $ligne)
-
-        if test $fheures -gt $heures || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
-        then
-            echo "$fheures:$fminutes $message (TAGS : $tags)"
-        fi
-    done < $RENDEZVOUS$FICHIERRENDEZVOUS
-}
-
-# Affiche tous les rendez-vous
-#
-# param tag : Le tag à chercher, optionnel
-function afficherAllRendezVous {
-    echo "Voici la liste des rendez-vous :"
-
-    while read ligne
-    do
-        chaineVersHeure $(cut -f1 <<< $ligne) #return fheures, fminutes
-        message=$(cut -f3 <<< $ligne)
-        tags=$(cut -f2 <<< $ligne)
-
-        if test -z $1 || grep -q $1 <<< $tags
-        then
-            echo "$fheures:$fminutes $message (TAGS : $tags)"
-        fi
-    done < $RENDEZVOUS$FICHIERRENDEZVOUS
-}
-
 case "$1" in
     -l)
         tag="$2"
