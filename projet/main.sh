@@ -3,6 +3,7 @@
 CHEMINDACCES=~/.config/quitter/
 FICHIER=horaires.db
 
+# Affiche une aide pour utiliser le script
 function usage {
     echo "usage :   quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
     echo "          quitter -l [+tag ...] pour afficher la liste des rendez-vous à venir"
@@ -13,6 +14,9 @@ function usage {
     echo "          quitter -q pour quitter le script"
 }
 
+# Affiche tous les rendez-vous à venir
+#
+# param tag : Le tag à chercher, optionnel
 function afficherRendezVousAVenir {
     heures=$(date +%H)
     minutes=$(date +%M)
@@ -33,6 +37,9 @@ function afficherRendezVousAVenir {
     done < $CHEMINDACCES$FICHIER
 }
 
+# Affiche tous les rendez-vous
+#
+# param tag : Le tag à chercher, optionnel
 function afficherAllRendezVous {
     echo "Voici la liste des rendez-vous :"
 

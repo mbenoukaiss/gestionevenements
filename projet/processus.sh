@@ -30,8 +30,6 @@ function setupConfig {
 # return 1 : Le fichier de processus est vide
 # return 2 : Le processus contenu dans le fichier n'est pas valide
 function verifieProcessus {
-	setupConfig
-
 	pid=$(cat FICHIERPID)
 
 	if test -n $pid
@@ -47,9 +45,9 @@ function verifieProcessus {
 }
 
 # Sauvegarde l'id du processus qui vient d'être créé
+#
+# param pid : L'id du processus
 function createProcessus {
-	setupConfig
-
 	pid=$1
 	echo $pid > $FICHIERPID
 }
@@ -59,7 +57,6 @@ function createProcessus {
 # return 1 : Le processus contenu dans le fichier n'est
 #            pas valide
 function stopProcessus {
-	setupConfig
 	verifieProcessus
 
 	if test $? -eq 0
@@ -68,7 +65,7 @@ function stopProcessus {
 
 		if test $? -eq 0
 		then
-			kill -9 $pid
+			kill -9 $pid 2> /dev/null
 		fi
 
 		rm $FICHIERPID

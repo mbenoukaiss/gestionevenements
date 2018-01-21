@@ -69,7 +69,7 @@ function heureVersChaine {
 #
 # param ligne : La ligne à décomposer
 function decomposeLigne {
-    fheurechaine=$(cut -d':' -f1 <<< "$1")
-    fmessage=$(cut -d':' -f2 <<< "$1")
-    ftags=$(cut -d':' -f3 <<< "$1")
+    fheurechaine=$(cut -f1 <<< "$1")
+    fmessage=$(cut -f2 <<< "$1")
+    ftags=$(cut -f3 <<< "$1")
 }
