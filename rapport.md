@@ -63,9 +63,3 @@ Le fichier processus.pid contient uniquement l'ID de la tache de fond si jamais 
 ## Travail réalisé
 
 - Nous avons réalisé sept fonctions pour executer répondant aux différentes options pouvant être executées par l'utilisateur lorsqu'il appelle le script (Voir syntaxe d'appel du script). 
-
-## Améliorations éventuelles
-
-- Il aurait été plus pratique d'avoir un gestionnaire d'évènements qui permette aussi de renseigner le jour, le mois et l'année afin de pouvoir noter des rendez-vous plusieurs jours ou mois voir même années à l'avance.
- 
-- À chaque exécution du script, celui-ci supprimerait tous les évènements passés (si l'utilisateur avait arrêté le script ou si son ordinateur n'était pas allumé lorsqu'un évènement aurait dû se déclencher).
