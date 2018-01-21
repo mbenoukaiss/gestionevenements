@@ -9,6 +9,12 @@ FICHIERPID=~/.config/quitter/boucle.pid
 # peuvent varier en fonction des versions, il est
 TAB=$(printf "\t")
 
+###################################
+###				###
+###	FONCTIONS UTILES	###
+###				###
+###################################
+
 # Convertit une chaine de caractères sous la forme HHMM en deux
 # variables : fheures contenant HH et fminutes contenant MM
 #
@@ -78,11 +84,11 @@ function decomposeLigne {
     ftags=$(cut -f2 <<< "$1")
 }
 
-###
-###
-###    FONCTIONS LIEES AUX PROCESSUS
-###
-###
+###########################################
+###					###
+###    FONCTIONS LIEES AUX PROCESSUS	###
+###					###
+###########################################
 
 # Fonction permettant de vérifier, toutes les 30 secondes
 # si il est l'heure d'afficher un message
@@ -178,11 +184,11 @@ function stopProcessus {
 	fi
 }
 
-###
-###
-###    FONCTIONS LIEES AUX RENDEZ-VOUS
-###
-###
+###########################################
+###					###
+###    FONCTIONS LIEES AUX RENDEZ-VOUS	###
+###					###
+###########################################
 
 # Affiche tous les rendez-vous à venir
 #
@@ -200,7 +206,7 @@ function afficherRendezVousAVenir {
         message=$(cut -f3 <<< $ligne)
         tags=$(cut -f2 <<< $ligne)
 
-        if test $fheures -gt $heures || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
+        if (test $fheures -gt $heures) || ( test $fheures -eq $heures && $fminutes -ge $minutes) && ( test -z $1 || grep -q $1 <<< $tags )
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
@@ -300,11 +306,11 @@ function supprimerRendezvousHeure {
     sed -i "/^$chaine$TAB/d" $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
 }
 
-###
-###
-###    EXECUTION DU SCRIPT
-###
-###
+###################################
+###				###
+###    EXECUTION DU SCRIPT	###
+###				###
+###################################
 
 # Affiche une aide pour utiliser le script
 function usage {
