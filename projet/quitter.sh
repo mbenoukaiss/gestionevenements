@@ -1,8 +1,13 @@
 #!/bin/bash
 
-REPERTOIRERENDEZVOUS=~/.config/quitter/
+# Repertoire pour les sauvegardes
+REPERTOIREQUITTER=~/.config/quitter/
+
+# Fichier de rendez-vous
 FICHIERRENDEZVOUS=horaires.db
-FICHIERPID=~/.config/quitter/boucle.pid
+
+# Fichier du processus
+FICHIERPID=boucle.pid
 
 # Caractère tabulation
 # Le support de ce caractère dans la commande sed et la commande echo
@@ -105,7 +110,7 @@ function tacheFond {
                 chaineVersHeure $fheurechaine
                 echo -e "Il est $fheures:$fminutes et vous avez un rendez-vous : \n$fmessage \nTAGS : $ftags" | xmessage -file - &
             fi
-        done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+        done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 
         sleep 30
     done
@@ -115,19 +120,19 @@ function tacheFond {
 # au fonctionnement du script existent, et les créé si
 # ils n'existent pas.
 function setupConfig {
-	if [ ! -e $REPERTOIRERENDEZVOUS ]
+	if [ ! -e $REPERTOIREQUITTER ]
 	then
-		mkdir $REPERTOIRERENDEZVOUS
+		mkdir $REPERTOIREQUITTER
 	fi
 
-	if [ ! -e $FICHIERPID ]
+	if [ ! -e $REPERTOIREQUITTER$FICHIERPID ]
 	then
-		touch FICHIERPID
+		touch $REPERTOIREQUITTER$FICHIERPID
 	else
-		if [ ! -f $FICHIERPID ]
+		if [ ! -f $REPERTOIREQUITTER$FICHIERPID ]
 		then
-			rm -r $FICHIERPID
-			touch $FICHIERPID
+			rm -r $REPERTOIREQUITTER$FICHIERPID
+			touch $REPERTOIREQUITTER$FICHIERPID
 		fi
 	fi
 }
@@ -138,7 +143,7 @@ function setupConfig {
 # return 1 : Le fichier de processus est vide
 # return 2 : Le processus contenu dans le fichier n'est pas valide
 function verifieProcessus {
-	pid=$(cat $FICHIERPID)
+	pid=$(cat $REPERTOIREQUITTER$FICHIERPID)
 
 	if test -n $pid
 	then
@@ -158,7 +163,7 @@ function verifieProcessus {
 # param pid : L'id du processus
 function createProcessus {
 	pid=$1
-	echo $pid > $FICHIERPID
+	echo $pid > $REPERTOIREQUITTER$FICHIERPID
 }
 
 # Arrête le processus contenu dans le fichier $FICHIERPID
@@ -170,15 +175,15 @@ function stopProcessus {
 
 	if test $? -eq 0
 	then
-		pid=$(cat $FICHIERPID)
+		pid=$(cat $REPERTOIREQUITTER$FICHIERPID)
 
 		if test $? -eq 0
 		then
 			kill -9 $pid 2> /dev/null
 		fi
 
-		rm $FICHIERPID
-                touch $FICHIERPID
+		rm $REPERTOIREQUITTER$FICHIERPID
+                touch $REPERTOIREQUITTER$FICHIERPID
 	else
 		return 1
 	fi
@@ -210,7 +215,7 @@ function afficherRendezVousAVenir {
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
-    done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+    done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
 # Affiche tous les rendez-vous
@@ -229,7 +234,7 @@ function afficherAllRendezVous {
         then
             echo "$fheures:$fminutes $message (TAGS : $tags)"
         fi
-    done < $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+    done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
 # Vérifie que les dossiers et les fichiers nécessaires
@@ -242,14 +247,14 @@ function setupRendezvous {
         mkdir $RENDEZVOUS
     fi
 
-    if [ ! -e $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS ]
+    if [ ! -e $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
     then
-        touch $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+        touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
     else
-        if [ ! -f $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS ]
+        if [ ! -f $REPERTOIREQUITTER$FICHIERRENDEZVOUS ]
         then
-            rm -r $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
-            touch $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+            rm -r $REPERTOIREQUITTER$FICHIERRENDEZVOUS
+            touch $REPERTOIREQUITTER$FICHIERRENDEZVOUS
         fi
     fi
 
@@ -277,7 +282,7 @@ function ajouterRendezvous {
         return $?
     fi
 
-    echo -e "$heurechaine$TAB$tags$TAB$message" >> $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+    echo -e "$heurechaine$TAB$tags$TAB$message" >> $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction des tags fournis
@@ -286,7 +291,7 @@ function ajouterRendezvous {
 # param tag : Le tag à supprimer
 function supprimerRendezvousTags {
     tag=$(echo $1 | tr -dc "[a-zA-Z0-9]")
-    sed -i -E "/[0-9]{4}$TAB[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}$TAB.{0,}/d" $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+    sed -i -E "/[0-9]{4}$TAB[a-zA-Z0-9+]{0,}$tag[a-zA-Z0-9+]{0,}$TAB.{0,}/d" $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
 # Supprime un rendez-vous en fonction de l'heure fournie
@@ -303,7 +308,7 @@ function supprimerRendezvousHeure {
         return $?
     fi
 
-    sed -i "/^$chaine$TAB/d" $REPERTOIRERENDEZVOUS$FICHIERRENDEZVOUS
+    sed -i "/^$chaine$TAB/d" $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 }
 
 ###################################
