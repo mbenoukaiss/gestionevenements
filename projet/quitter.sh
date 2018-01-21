@@ -4,6 +4,9 @@
 ###
 ###                         QUITTER.SH
 ###
+###  Script shell permettant de gérer différents évènements sans 
+###             avoir à vous soucier de l'heure !
+###
 ###         Auteurs :
 ###      BENOU-KAÏSS Marwane, QUERRE Clément
 ###
@@ -405,10 +408,10 @@ case "$1" in
             tags=$(grep -F + <<< "$args" | tr -d "\n")
 
             ajouterRendezvous "$heurechaine" "$message" "$tags"
-        else
-            stopProcessus
-            tacheFond &
-            createProcessus $!
         fi
+
+        stopProcessus
+        tacheFond &
+        createProcessus $!
         ;;
 esac
