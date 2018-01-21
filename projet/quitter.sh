@@ -91,6 +91,27 @@ function heureVersChaine {
     fchaine="$heures$minutes"
 }
 
+# Vérifie si l'heure fournie en paramètre en tant que chaine
+# de caractères sous la forme HHMM est cohérente avec
+# l'heure système
+#
+# param heure : Heure dans le format HHMM
+# return : 1 : L'heure n'est pas cohérente avec l'heure système
+function coherenceHeures {
+    heurechaine=$1
+    heures=$(date +%H)
+    minutes=$(date +%M)
+
+    chaineVersHeure $heurechaine
+    
+    if test $fheures -lt $heures || ( test $fheures -eq $heures && test $fminutes -le $minutes )
+    then
+        return 1
+    else
+        return 0
+    fi
+}
+
 # Décompose une ligne de données du fichier horaires.db
 #
 # param ligne : La ligne à décomposer
@@ -124,7 +145,7 @@ function tacheFond {
             then
                 notificationEnvoyee=true
                 chaineVersHeure $fheurechaine
-                echo -e "Il est $fheures:$fminutes et vous avez un rendez-vous : \n$fmessage \nTAGS : $ftags" | xmessage -file - &
+                echo -e "Il est $fheures:$fminutes et vous avez un rendez-vous : \n$fmessage \nTAGS : $ftags" | xmessage -title "Quitter.sh - Notification" -center -file - &
             fi
         done < $REPERTOIREQUITTER$FICHIERRENDEZVOUS
 
@@ -281,9 +302,16 @@ function ajouterRendezvous {
     tags=$3
 
     verifieChaineHeure $heurechaine #VOIR utils.sh
-    if(test $? -ne 0)
+    if test $? -ne 0
     then
-        xmessage "L'heure renseignee est invalide ($chaine)"
+        xmessage -title "Quitter.sh - Information" -center "L'heure renseignee est invalide ($chaine)"
+        return $?
+    fi
+
+    coherenceHeures $heurechaine
+    if test $? -ne 0
+    then
+        xmessage -title "Quitter.sh - Information" -center "L'heure renseignee n'est pas coherente avec l'heure systeme"
         return $?
     fi
 
@@ -309,7 +337,7 @@ function supprimerRendezvousHeure {
 
     if(test $? -ne 0)
     then
-        xmessage "L'heure renseignee est invalide ($chaine)"
+        xmessage -title "Quitter.sh - Information" -center "L'heure renseignee est invalide ($chaine)"
         return $?
     fi
 
