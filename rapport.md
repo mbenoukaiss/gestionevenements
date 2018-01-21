@@ -10,7 +10,7 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 
 ## Syntaxe d'appel du script
 
-- quitter HHMM message... [+tag ...] pour ajouter un rendez vous à l'heure indiquée"
+- quitter HHMM message... [+tag ...] pour ajouter un rendez-vous à l'heure indiquée"
 - quitter -l [+tag ...] pour afficher la liste des rendez-vous à venir"
 - quitter -a pour afficher la liste de tous les rendez-vous"
 - quitter -r [HHMM] pour supprimer les rendez-vous de l'heure correspondante"
@@ -21,8 +21,8 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 ## Traces d'execution
 
 - quitter 1245 Manger avec mes parents +manger +parents :
-	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce cas découpera en trois grosses parties, l'horaire : 1245, le message : Manger avec mes parents, et la chaîne de caractère des tags : +manger +parents.
-	- Ces trois parties seront lancer en argument sur notre fonction ajouterRendezvous qui ajoutera dans notre fichier horaire.db le rendez-vous sous la forme : 1245:+manger +parents:Manger avec mes parents
+	- Notre programme se lance et rentre dans la boucle case. N'ayant aucune option sur cette commande, ce cas découpera en trois grosses parties, l'horaire : 1245, le message : "Manger avec mes parents", et la chaîne de caractère des tags : "+manger +parents".
+	- Ces trois parties seront lancées en arguments sur notre fonction ajouterRendezVous qui ajoutera, dans notre fichier horaire.db, le rendez-vous sous la forme : 1245	+manger +parents	Manger avec mes parents
 
 - quitter -a :
 	- Notre programme rentrera dans notre boucle case pour lancer la fonction afficherAllRendezVous qui remettra chacune des parties de chaque ligne de rendez-vous afin d'afficher la liste de tous les rendez-vous sous la forme : HHMM message... [+tag +tag ...]
@@ -31,20 +31,20 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 	- Ici, notre programme rentre la fonction afficherRendezVousAVenir en prenant en premier argument le tag diner et en second tag jeanne. Notre fonction vas donc chercher dans la liste des rendez-vous à venir ceux qui auront comme tags jeanne et diner pour pouvoir les afficher.
 
 - quitter -r 1245
-	- Notre programme va executer la fonction supprimerRendezVous dans notre case et lancer la fonction supprimerRendezVousHeure en prenant en argument la chaine 1245. Cette dernière fonction va supprimer dans la liste de tous les rendez-vous du fichier horaire.db qui correspondent à cette horaire.
+	- Notre programme va executer la fonction supprimerRendezVous dans notre case et lancer la fonction supprimerRendezVousHeure en prenant en argument la chaine 1245. Cette dernière fonction va supprimer dans la liste de tous les rendez-vous du fichier horaire.db qui correspondent à cet horaire.
 
 - quitter -r +manger
-	-De même ici, notre programme lancer la fonction supprimerRendezVous dans notre case et identifier manger comme un tag pour lancer la fonction supprimerRendezVousTags avec en argument la liste de tous les tags. Cette dernière fonction recherche le tag dans les tags des rendez-vous du fichier horaires.db et les supprimes.
+	-De même ici, notre programme lancer la fonction supprimerRendezVous dans notre case et identifier manger comme un tag pour lancer la fonction supprimerRendezVousTags avec en argument la liste de tous les tags. Cette dernière fonction recherche le tag +manger dans les tags des rendez-vous du fichier horaires.db et les supprimes.
 
 - quitter -h
-	- Ce paramètre permet à notre script d'executer la fonction usage qui affichera dans la console l'ensemble des fonctionnalités proposés par notre script comme écrit dans la syntaxe d'appel.
+	- Ce paramètre permet à notre script d'executer la fonction usage qui affichera dans la console l'ensemble des fonctionnalités proposées par notre script comme écrit dans la syntaxe d'appel.
 
 - quitter -q
 	- Enfin, ce paramètre permettra à notre script de s'arrêter.
 
 ## Difficultés rencontrées lors du projet
 
-- Lors de la sauvegarde des évènements dans le fichier, il était important de trouver un délimiteur qui permette au script de continuer de fonctionner quel que soit le message de l'utilisateur. Nous avions au départ opté pour le caractère :, mais il se peut que l'utilisateur en utilise dans son message. Finalement, nous avons choisi la tabulation, en effet, il est impossible d'en mettre depuis le terminal.
+- Lors de la sauvegarde des évènements dans le fichier, il était important de trouver un délimiteur qui permette au script de continuer de fonctionner quel que soit le message de l'utilisateur. Nous avions au départ opté pour le caractère ':', mais il se peut que l'utilisateur en utilise dans son message. Finalement, nous avons choisi la tabulation, en effet, il est impossible d'en mettre depuis le terminal.
 
 ## Travail réalisé
 
@@ -52,6 +52,6 @@ Afin d'être capable de lancer une alerte au bon moment, un script est lancé en
 
 ## Améliorations éventuelles
 
-- Il aurait été plus pratique d'avoir un gestionnaire d'évènements qui permette aussi de renseigner le jour, le mois et l'année afin de pouvoir noter des rendez-vous plusieurs jours ou mois voir même années à l'avances.
+- Il aurait été plus pratique d'avoir un gestionnaire d'évènements qui permette aussi de renseigner le jour, le mois et l'année afin de pouvoir noter des rendez-vous plusieurs jours ou mois voir même années à l'avance.
  
-- À chaque execution du script, celui-ci supprimerait tous les évènements passés (si l'utilisateur avait arrêté le script ou si son ordinateur n'était pas allumé lorsqu'un évènement aurait du se déclencher).
+- À chaque exécution du script, celui-ci supprimerait tous les évènements passés (si l'utilisateur avait arrêté le script ou si son ordinateur n'était pas allumé lorsqu'un évènement aurait dû se déclencher).
