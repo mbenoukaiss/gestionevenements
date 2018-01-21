@@ -77,12 +77,3 @@ function stopProcessus {
 		return 1
 	fi
 }
-
-# Zone de tests
-if test $1 = "c"
-then
-	createProcessus $2
-elif test $1 = "k"
-then
-	stopProcessus
-fi
